@@ -14,26 +14,50 @@ type PurchaseProductProps = {
 	isMobile?: boolean;
 };
 
-const PurchaseProduct: FC<PurchaseProductProps> = ({ item, i, setItem, isMobile, deleteItem }) => {
+const PurchaseProduct: FC<PurchaseProductProps> = ({
+	item,
+	i,
+	setItem,
+	isMobile,
+	deleteItem,
+}) => {
 	const [qty, setQty] = useState(1);
 	const [price, setPrice] = useState(0);
 
 	useEffect(() => {
-		setQty(item?.qty);
-		setPrice(item?.price);
-	}, []);
-
+		setQty(Number(item?.qty || 1));
+		setPrice(Number(item?.price || 0));
+	}, [item?.qty, item?.price]);
 	const handlePrice = (e: any) => {
-		setPrice(e.target.value);
-		setItem({ price: e.target.value, item, qty });
+		const newPrice = Number(e.target.value || 0);
+		const newQty = Number(qty || 0);
+
+		setPrice(newPrice);
+
+		setItem({
+			lineId: item.lineId,
+			item,
+			qty: newQty,
+			price: newPrice,
+			variantId: item.variantId,
+		});
 	};
 
 	const handleReturnQty = (e: any) => {
-		if (e.target.value < 0) {
-			return;
-		}
-		setQty(e.target.value);
-		setItem({ price: price, item, qty: e.target.value });
+		const newQty = Number(e.target.value || 0);
+		if (newQty < 0) return;
+
+		const newPrice = Number(price || 0);
+
+		setQty(newQty);
+
+		setItem({
+			lineId: item.lineId,
+			item,
+			qty: newQty,
+			price: newPrice,
+			variantId: item.variantId,
+		});
 	};
 
 	if (isMobile)
@@ -41,6 +65,7 @@ const PurchaseProduct: FC<PurchaseProductProps> = ({ item, i, setItem, isMobile,
 			<RowContainerBase>
 				<Td heading='#'>{i + 1}</Td>
 				<Td heading='Product Name'>{item?.name}</Td>
+				<Td heading='Product Name'>{item?.variantName}</Td>
 
 				<Td heading='Qty'>
 					<InputElement
@@ -52,7 +77,7 @@ const PurchaseProduct: FC<PurchaseProductProps> = ({ item, i, setItem, isMobile,
 					/>
 				</Td>
 
-				<Td heading='Cost Price'>
+				{/* <Td heading='Cost Price'>
 					<InputElement
 						size='xs'
 						type='number'
@@ -61,16 +86,12 @@ const PurchaseProduct: FC<PurchaseProductProps> = ({ item, i, setItem, isMobile,
 						w='100px'
 					/>
 				</Td>
-				<Td
-					isNumeric
-					heading='SubTotal'>
+				<Td isNumeric heading='SubTotal'>
 					{item?.subTotal}
-				</Td>
+				</Td> */}
 
 				<Td>
-					<Box
-						cursor='pointer'
-						onClick={() => deleteItem(item?._id)}>
+					<Box cursor='pointer' onClick={() => deleteItem(item?.lineId)}>
 						<Icon name='delete' />
 					</Box>
 				</Td>
@@ -80,6 +101,7 @@ const PurchaseProduct: FC<PurchaseProductProps> = ({ item, i, setItem, isMobile,
 		<Tr h='2.5rem'>
 			<TD>{i + 1}</TD>
 			<TD>{item?.name}</TD>
+			<TD>{item?.variantName}</TD>
 
 			<TD>
 				<InputElement
@@ -91,7 +113,7 @@ const PurchaseProduct: FC<PurchaseProductProps> = ({ item, i, setItem, isMobile,
 				/>
 			</TD>
 
-			<TD>
+			{/* <TD>
 				<InputElement
 					size='xs'
 					type='number'
@@ -100,12 +122,10 @@ const PurchaseProduct: FC<PurchaseProductProps> = ({ item, i, setItem, isMobile,
 					w='100px'
 				/>
 			</TD>
-			<TD isNumeric>{item?.subTotal}</TD>
+			<TD isNumeric>{item?.subTotal}</TD> */}
 
 			<TD>
-				<Box
-					cursor='pointer'
-					onClick={() => deleteItem(item?._id)}>
+				<Box cursor='pointer' onClick={() => deleteItem(item?.lineId)}>
 					<Icon name='delete' />
 				</Box>
 			</TD>

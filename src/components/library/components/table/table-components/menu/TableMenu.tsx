@@ -14,9 +14,10 @@ import {
 	UpdateStringModal,
 	ViewServerModal,
 	useGetConfigQuery,
+	DownloadBarcodeMenuItem,
 } from '../../../..';
 import Link from 'next/link';
-
+import NextLink from 'next/link';
 type TableMenuProps = {
 	data: any;
 	id: string;
@@ -62,34 +63,34 @@ const TableMenu: FC<TableMenuProps> = ({
 					switch (item.type) {
 						case 'custom-redirect':
 							return (
-								<MenuItem
-									href={item?.href(doc) || '#'}
-									key={i}>
+								<MenuItem href={item?.href(doc) || '#'} key={i}>
 									{item?.title}
 								</MenuItem>
 							);
 						case 'redirect':
 							return (
-								<MenuItem
-									href={item?.href || '#'}
-									key={i}>
+								<MenuItem href={item?.href || '#'} key={i}>
 									{item?.title}
 								</MenuItem>
 							);
 
 						case 'link':
 							return (
-								<MenuItem
-									href={`${item?.href}/${id}` || '#'}
-									key={i}>
+								<MenuItem href={`${item?.href}/${id}` || '#'} key={i}>
 									{item?.title}
 								</MenuItem>
 							);
+						case 'download':
+							return (
+								<DownloadBarcodeMenuItem
+									key={i}
+									title={item?.title}
+									doc={doc}
+								/>
+							);
 						case 'edit':
 							return (
-								<MenuItem
-									key={i}
-									href={`/${path}/edit/${id}`}>
+								<MenuItem key={i} href={`/${path}/edit/${id}`}>
 									{item?.title}
 								</MenuItem>
 							);
@@ -102,7 +103,8 @@ const TableMenu: FC<TableMenuProps> = ({
 									doc={doc}
 									invalidate={item?.invalidate}
 									id={item?.id ? item?.id(doc) : id}
-									title={item?.title}>
+									title={item?.title}
+								>
 									<MenuItem>{item?.title}</MenuItem>
 								</CreateModal>
 							);
@@ -116,7 +118,8 @@ const TableMenu: FC<TableMenuProps> = ({
 									title='Edit'
 									type='update'
 									layout={item?.layout}
-									item={item}>
+									item={item}
+								>
 									{item?.title}
 								</CreateModal>
 							);
@@ -138,19 +141,30 @@ const TableMenu: FC<TableMenuProps> = ({
 
 						case 'view':
 							return (
-								<Link
-									as={MenuItem as any}
-									key={i}
-									href={`/${path}/${id}`}>
+								<MenuItem
+									as={NextLink}
+									key={`menu-view-${id}-${i}`}
+									href={`/${path}/${id}`}
+								>
 									{item?.title}
-								</Link>
+								</MenuItem>
 							);
+						// case 'view':
+						// 	return (
+						// 		<Link
+						// 			as={MenuItem as any}
+						// 			key={i}
+						// 			href={`/${path}/${id}`}>
+						// 			{item?.title}
+						// 		</Link>
+						// 	);
 						case 'view-item':
 							return (
 								<MenuItem
 									icon='arrow-angle'
 									key={i}
-									href={`/view/${path}/${id}`}>
+									href={`/view/${path}/${id}`}
+								>
 									{item?.title}
 								</MenuItem>
 							);
@@ -211,12 +225,7 @@ const TableMenu: FC<TableMenuProps> = ({
 								/>
 							);
 						case 'duplicate':
-							return (
-								<DuplicateModal
-									{...commonProps}
-									title={item?.title}
-								/>
-							);
+							return <DuplicateModal {...commonProps} title={item?.title} />;
 						case 'view-modal':
 							return (
 								<ViewItemModal
@@ -228,12 +237,7 @@ const TableMenu: FC<TableMenuProps> = ({
 							);
 
 						case 'view-server-modal':
-							return (
-								<ViewServerModal
-									{...commonProps}
-									title={item?.title}
-								/>
-							);
+							return <ViewServerModal {...commonProps} title={item?.title} />;
 
 						case 'custom':
 							return (
@@ -246,11 +250,7 @@ const TableMenu: FC<TableMenuProps> = ({
 							);
 						case 'custom-modal':
 							return (
-								<item.modal
-									{...commonProps}
-									data={doc}
-									title={item?.title}
-								/>
+								<item.modal {...commonProps} data={doc} title={item?.title} />
 							);
 						default:
 							return <MenuItem key={i}>{item?.title}</MenuItem>;

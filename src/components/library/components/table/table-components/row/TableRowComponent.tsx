@@ -18,6 +18,7 @@ type TableProps = StackProps &
 		fields?: string[] | [];
 		selectable?: boolean;
 		clickable?: boolean;
+		colorScheme?: any;
 	};
 
 const TableRowComponent: FC<TableProps> = ({
@@ -28,6 +29,7 @@ const TableRowComponent: FC<TableProps> = ({
 	fields = [],
 	clickable,
 	selectable,
+	colorScheme,
 	...props
 }) => {
 	const isMobile = useIsMobile();
@@ -35,6 +37,7 @@ const TableRowComponent: FC<TableProps> = ({
 	return (
 		// Create a TableRow for each item
 		<TableRow
+			// {...(colorScheme && { bg: colorScheme(item?.status) })}
 			cursor={clickable ? 'pointer' : 'default'}
 			selectable={selectable}
 			id={item?._id}
@@ -43,6 +46,7 @@ const TableRowComponent: FC<TableProps> = ({
 			{...props}>
 			{/* If the table is selectable, return a TableData cell with a checkbox */}
 			{/* Map over the data keys and create a TableData cell for each */}
+			{/* <p>{colorScheme(item?.status)}</p> */}
 			{data?.map((val: any) => {
 				const {
 					dataKey,

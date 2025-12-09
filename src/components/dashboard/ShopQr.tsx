@@ -1,5 +1,5 @@
 import { StatContainer } from '@/components/library/stat/stat-components';
-import { useGetSelfQuery } from '@/store/services/authApi';
+import { useGetSelfQuery } from '@/components/library';
 import {
 	Box,
 	Flex,

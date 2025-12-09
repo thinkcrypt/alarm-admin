@@ -23,6 +23,7 @@ type CommonTableProps = {
 	topPagination?: boolean;
 	limit?: number;
 	preFilters?: any;
+	refreshKey?: any;
 };
 
 export type TableObjectProps = CommonTableProps & {

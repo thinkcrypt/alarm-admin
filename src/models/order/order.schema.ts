@@ -128,25 +128,53 @@ const schema = {
 		default: true,
 	},
 	status: {
-		label: 'Delivery Status',
-		type: 'text',
-		tableType: 'tag',
+		label: 'Order Status',
+		type: 'tag',
 		colorScheme: (status: string) => {
-			if (status == 'pending') return 'blue';
-			else if (status == 'completed') return 'green';
-			else if (status == 'cancelled') return 'red';
-			else if (status == 'order-placed') return 'purple';
-			else return 'purple';
+			if (status === 'pending') return 'yellow';
+			if (status === 'completed') return 'green';
+			if (status === 'cancelled') return 'red';
+			if (status === 'order-placed') return 'blue';
+			if (status === 'ready-for-dispatch') return 'cyan';
+			if (status === 'dispatched') return 'teal';
+			if (status === 'refunded') return 'orange';
+			return 'purple';
 		},
 		displayInTable: true,
 		default: true,
 	},
+
+	isNewOrder: {
+		type: 'tag',
+		label: 'New Orders',
+		colorScheme: (isNewOrder: any) => {
+			return isNewOrder ? 'blue' : 'purple';
+		},
+		sort: true,
+		displayInTable: true,
+		default: true,
+	},
+
 	customer: {
 		label: 'Customer',
 		type: 'text',
 		displayInTable: true,
 		default: true,
 		tableKey: 'customer.name',
+	},
+	recipient: {
+		label: 'Recipient',
+		type: 'text',
+		displayInTable: true,
+		default: true,
+		tableKey: 'address.name',
+	},
+	recipientPhone: {
+		label: 'Recipient Phone',
+		type: 'text',
+		displayInTable: true,
+		default: true,
+		tableKey: 'address.phone',
 	},
 	location: {
 		label: 'Location',

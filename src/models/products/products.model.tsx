@@ -12,18 +12,17 @@ import itemMenu from './data/itemMenu';
 
 const layout = [
 	{
-		sectionTitle: 'Product Information',
-		fields: ['name', 'status'],
-	},
-	{
-		sectionTitle: 'Product Description',
-		fields: ['shortDescription', 'description'],
-	},
-	{
 		sectionTitle: 'Media',
 		fields: ['image', 'images'],
 	},
-
+	{
+		sectionTitle: 'Product Information',
+		fields: ['name', 'type', 'status'],
+	},
+	{
+		sectionTitle: 'Product Categories',
+		fields: ['categories'],
+	},
 	{
 		sectionTitle: 'Detailed Information',
 		fields: [
@@ -43,20 +42,31 @@ const layout = [
 		description: 'Upload a size chart for this product',
 		fields: ['sizeChart'],
 	},
+
 	{
 		sectionTitle: 'Stock Information',
 		fields: [['stock', 'lowStockAlert']],
-	},
-	{
-		sectionTitle: 'Discount Information',
-		fields: ['isDiscount', ['discountType', 'discount']],
 	},
 
 	{
 		sectionTitle: 'Product Variations',
 		description: 'Add variations for this product',
-		fields: ['type', ['colors', 'sizes'], 'variations'],
+		fields: [['colors', 'sizes'], 'variations'],
 	},
+	{
+		sectionTitle: 'Bulk Discount',
+		fields: ['bulkDiscounts'],
+	},
+	{
+		sectionTitle: 'Product Description',
+		fields: ['shortDescription', 'description'],
+	},
+
+	{
+		sectionTitle: 'Discount Information',
+		fields: ['isDiscount', ['discountType', 'discount']],
+	},
+
 	{
 		sectionTitle: 'Custom Fields',
 		fields: [
@@ -97,7 +107,10 @@ const tableLayout: any[] = [
 ];
 
 const createProductFormFields = createFormFields({ schema, layout });
-export const viewAllDataFields = convertToTableFields({ schema, fields: tableLayout });
+export const viewAllDataFields = convertToTableFields({
+	schema,
+	fields: tableLayout,
+});
 export const viewPreviewFields = convertToViewFields({ schema });
 
 export const viewProductFields = convertToViewFields({ schema });

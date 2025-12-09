@@ -61,7 +61,7 @@ const VVariant: FC<FormDataType> = ({
 							name: variantName,
 							price: form?.price,
 							cost: form?.cost,
-							stock: 0,
+							stock: 10,
 							sku: '',
 							images: [...(form?.images ? [form?.images] : [])],
 

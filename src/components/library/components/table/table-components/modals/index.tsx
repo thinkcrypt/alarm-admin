@@ -16,6 +16,7 @@ export { default as EditFieldModal } from './EditFieldModal';
 export { default as DecisionModal } from './DecisionModal';
 export { default as UpdateDataMenuModal } from './UpdateDataMenuModal';
 export { default as UpdateStringModal } from './UpdateStringModal';
+export { default as BulkDiscountModal } from './BulkDiscountModal';
 
 export { default as DecisionAlert } from './Alert';
 

@@ -57,7 +57,8 @@ const TableData: FC<TableDataPropsType> = ({
 					{...commonProps}
 					cursor='pointer'
 					onClick={onCopy}
-					{...props}>
+					{...props}
+				>
 					{children}
 					{<CopyIcon ml={2} />}
 				</TableBody>
@@ -66,9 +67,7 @@ const TableData: FC<TableDataPropsType> = ({
 	}
 
 	return (
-		<TableBody
-			item={item}
-			{...commonProps}>
+		<TableBody item={item} {...commonProps}>
 			{children}
 		</TableBody>
 	);
@@ -107,10 +106,10 @@ const TableBody: FC<TableDataPropsType> = ({
 									: '#EE0000'
 							}
 						/>
-						<Text
-							fontSize='15px'
-							textTransform='capitalize'>
-							{item?.displayValue ? item?.displayValue[children?.toString()] : children?.toString()}
+						<Text fontSize='15px' textTransform='capitalize'>
+							{item?.displayValue
+								? item?.displayValue[children?.toString()]
+								: children?.toString()}
 						</Text>
 					</Align>
 
@@ -123,30 +122,68 @@ const TableBody: FC<TableDataPropsType> = ({
 					</Badge> */}
 				</CustomTd>
 			);
+		case 'tag': {
+			const values = Array.isArray(children) ? children : [children];
 
-		case 'tag':
 			return (
-				<CustomTd
-					flexWrap='wrap'
-					gap={2}>
-					{Array.isArray(children)
-						? children.map((item: any, i: number) => (
-								<Badge
-									key={i}
-									colorScheme={
-										item?.colorTheme
-											? item?.colorTheme[item.toLowerCase()]
-											: colorScheme
-											? colorScheme(children)
-											: 'gray'
-									}
-									{...badgeCss}>
-									{item}
+				<CustomTd flexWrap='wrap' gap={2}>
+					{values
+						.filter(v => v !== undefined && v !== null && v !== '')
+						.map((val: any, i: number) => {
+							const raw = val?.toString?.() ?? val;
+							const lower = typeof raw === 'string' ? raw.toLowerCase() : raw;
+							let badgeColor: BadgeProps['colorScheme'] = 'gray';
+
+							if (
+								item?.colorTheme &&
+								typeof lower === 'string' &&
+								item.colorTheme[lower]
+							) {
+								badgeColor = item.colorTheme[lower];
+							} else if (typeof colorScheme === 'function') {
+								badgeColor = colorScheme(val);
+							} else if (typeof colorScheme === 'string') {
+								badgeColor = colorScheme;
+							}
+
+							// Optional mapping: item.displayValue[value]
+							const label =
+								item?.displayValue && raw in item.displayValue
+									? item.displayValue[raw]
+									: raw;
+
+							return (
+								<Badge key={i} colorScheme={badgeColor} {...badgeCss}>
+									{label}
 								</Badge>
-						  ))
-						: null}
+							);
+						})}
 				</CustomTd>
 			);
+		}
+
+		// case 'tag':
+		// 	return (
+		// 		<CustomTd flexWrap='wrap' gap={2}>
+		// 			{Array.isArray(children)
+		// 				? children.map((item: any, i: number) => (
+		// 						<Badge
+		// 							key={i}
+		// 							colorScheme={
+		// 								item?.colorTheme
+		// 									? item?.colorTheme[item.toLowerCase()]
+		// 									: colorScheme
+		// 									? colorScheme(children)
+		// 									: 'gray'
+		// 							}
+		// 							{...badgeCss}
+		// 						>
+		// 							{item}
+		// 						</Badge>
+		// 				  ))
+		// 				: null}
+		// 		</CustomTd>
+		// 	);
 		case 'number':
 			return <CustomTd {...props}>{children?.toLocaleString()}</CustomTd>;
 
@@ -158,49 +195,53 @@ const TableBody: FC<TableDataPropsType> = ({
 					type='image-text'
 					gap={2}
 					src={imageKey}
-					{...props}>
+					{...props}
+				>
 					{children}
 				</CustomTd>
 			);
-		case 'time':
+		case 'time': {
+			const formattedTime =
+				children && moment(children).isValid()
+					? moment(children).format('hh:mm A')
+					: children || '--';
 			return (
-				<CustomTd
-					{...dateCss}
-					{...props}>
-					{children || '--'}
+				<CustomTd {...dateCss} {...props}>
+					{formattedTime || '--'}
 				</CustomTd>
 			);
+		}
 		case 'date-only':
 			return (
-				<CustomTd
-					{...dateCss}
-					{...props}>
+				<CustomTd {...dateCss} {...props}>
 					{children ? moment(children).format('DD-MM-YYYY') : '--'}
 				</CustomTd>
 			);
 		case 'date':
 			return (
-				<CustomTd
-					{...dateCss}
-					{...props}>
+				<CustomTd {...dateCss} {...props}>
 					{children ? moment(children).calendar() : '--'}
 				</CustomTd>
 			);
 		case 'boolean':
-			return <CustomTd {...props}>{children ? 'Yes' : 'No'}</CustomTd>;
-		case 'external-link':
 			return (
 				<CustomTd
-					type={type}
-					{...props}>
+					{...props}
+					// {...(colorScheme && { color: colorScheme(item?.isNewOrder) })}
+				>
+					{children ? 'Yes' : 'No'}
+				</CustomTd>
+			);
+
+		case 'external-link':
+			return (
+				<CustomTd type={type} {...props}>
 					{children}
 				</CustomTd>
 			);
 		case 'file':
 			return (
-				<CustomTd
-					type={type}
-					{...props}>
+				<CustomTd type={type} {...props}>
 					{children}
 				</CustomTd>
 			);

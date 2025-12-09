@@ -29,10 +29,21 @@ type TableProps = {
 };
 
 // Define the PageTable component
-const PageTable: FC<TableProps> = ({ table, layoutPath, children, schemaLoading = false }) => {
-	const { page, limit, search, sort, filters, preferences, selectedItems }: any = useAppSelector(
-		(state: any) => state.table
-	);
+const PageTable: FC<TableProps> = ({
+	table,
+	layoutPath,
+	children,
+	schemaLoading = false,
+}) => {
+	const {
+		page,
+		limit,
+		search,
+		sort,
+		filters,
+		preferences,
+		selectedItems,
+	}: any = useAppSelector((state: any) => state.table);
 	const dispatch = useAppDispatch();
 	const [col, setCol] = useState<number>(table?.data?.length + 1);
 	const router = useRouter();
@@ -48,16 +59,18 @@ const PageTable: FC<TableProps> = ({ table, layoutPath, children, schemaLoading 
 			sort,
 			filters: table?.preFilters ?? (tableFilters ? filters : null),
 			path: table?.path,
-		},
-		{
-			pollingInterval: 10000, // Poll every 10 seconds (set your desired interval in ms)
 		}
+		// {
+		// 	pollingInterval: 10000, // Poll every 10 seconds (set your desired interval in ms)
+		// }
 	);
 
 	const { data: userData } = useGetSelfQuery({});
 	useEffect(() => {
 		const defaultFields = table?.data
-			? table?.data?.filter(item => item.type !== 'menu').map(item => item.dataKey)
+			? table?.data
+					?.filter(item => item.type !== 'menu')
+					.map(item => item.dataKey)
 			: [];
 		dispatch(setFields(defaultFields));
 	}, []);
@@ -75,7 +88,8 @@ const PageTable: FC<TableProps> = ({ table, layoutPath, children, schemaLoading 
 			: [];
 		if (userData && userData?.preferences) {
 			const preference = userData?.preferences[table?.path];
-			const value = preference && preference?.length > 0 ? preference : defaultPreferences;
+			const value =
+				preference && preference?.length > 0 ? preference : defaultPreferences;
 			dispatch(setPreferences(value));
 			setCol(value.length + 1);
 		}
@@ -95,7 +109,9 @@ const PageTable: FC<TableProps> = ({ table, layoutPath, children, schemaLoading 
 	// Create the table body by mapping over the data and creating a TableRowComponent for each item
 	const body = data?.doc?.map((item: any) => (
 		<TableRowComponent
-			onClick={() => table?.clickable && router.push(`${table?.toPath}/${item?._id}`)}
+			onClick={() =>
+				table?.clickable && router.push(`${table?.toPath}/${item?._id}`)
+			}
 			selectable={selectable}
 			fields={preferences}
 			item={item}
@@ -110,10 +126,7 @@ const PageTable: FC<TableProps> = ({ table, layoutPath, children, schemaLoading 
 	// Return the layout, page heading, table, and toast components
 	return (
 		<>
-			<Layout
-				pb='32px'
-				title={table?.title}
-				path={layoutPath || table?.path}>
+			<Layout pb='32px' title={table?.title} path={layoutPath || table?.path}>
 				<PageHeading
 					table={table}
 					title={table?.title} //Heading of the page
@@ -142,15 +155,13 @@ const PageTable: FC<TableProps> = ({ table, layoutPath, children, schemaLoading 
 					isError={isError} //If error while fetching data
 					select={table?.select} //Select menu
 					error={error} //Error message
-					table={table}>
+					table={table}
+				>
 					<>{body}</>
 				</CustomTable>
 			</Layout>
 			{/* Toast component to display error */}
-			<Toast
-				error={error}
-				isError={isError}
-			/>
+			<Toast error={error} isError={isError} />
 		</>
 	);
 };

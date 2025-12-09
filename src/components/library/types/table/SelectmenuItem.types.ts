@@ -7,7 +7,9 @@ type Item =
 	| 'custom'
 	| 'edit-select'
 	| 'edit-data-select'
+	| 'bulk-discount'
 	| 'export'
+	| 'bulk-invoice-export'
 	| 'update-api'
 	| 'calculate'
 	| 'marketing-sms';
@@ -18,6 +20,8 @@ type Item =
 type Prompt = {
 	title?: string;
 	body?: string;
+	actionBtnText?: string;
+	menuBtnText?: string;
 	successMsg?: string;
 };
 

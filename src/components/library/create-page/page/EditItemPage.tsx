@@ -1,6 +1,14 @@
 'use client';
 
-import { FC, useState } from 'react';
+import {
+	FC,
+	useEffect,
+	useState,
+	type Dispatch,
+	type SetStateAction,
+} from 'react';
+
+type ProductForm = { variations?: any[]; stock?: number } & Record<string, any>;
 
 import {
 	FormMain,
@@ -24,9 +32,12 @@ const EditItemPage: FC<FormPageType> = ({ data: dataFields }) => {
 	const { id } = useParams<{ id: string }>();
 
 	const { data } = useGetByIdToEditQuery({ path: path, id: id }, { skip: !id });
-
-	const [formData, setFormData] = useFormData<any>(fields, data);
-	const [changedData, setChangedData] = useState({});
+	// console.log('p-dataee:', data);
+	const [formData, setFormData] = useFormData(fields, data) as [
+		ProductForm,
+		Dispatch<SetStateAction<ProductForm>>
+	];
+	const [changedData, setChangedData] = useState<Partial<ProductForm>>({});
 
 	const [trigger, result] = useUpdateByIdMutation();
 	const { isSuccess, isLoading, isError, error } = result;
@@ -40,18 +51,41 @@ const EditItemPage: FC<FormPageType> = ({ data: dataFields }) => {
 		error: error,
 	});
 
+	const syncStockWithVariants = (data: any) => {
+		const variants = data?.variations ?? formData?.variations;
+		if (!Array.isArray(variants) || variants.length === 0) return data;
+
+		const variantStock = variants.reduce(
+			(sum: number, v: any) => sum + Number(v?.stock || 0),
+			0
+		);
+		return { ...data, stock: variantStock };
+	};
+
+	useEffect(() => {
+		const total =
+			formData?.variations?.reduce(
+				(sum: number, v: any) => sum + Number(v?.stock || 0),
+				0
+			) ?? 0;
+		if (Number.isNaN(total)) return;
+		setFormData((prev: any) =>
+			prev?.stock === total ? prev : { ...prev, stock: total }
+		);
+		setChangedData((prev: any) =>
+			prev?.stock === total ? prev : { ...prev, stock: total }
+		);
+	}, [formData?.variations]);
+
 	const handleSubmit = (e: any) => {
 		e.preventDefault();
-		trigger({ path, id, body: changedData });
+		const body = syncStockWithVariants(changedData);
+		trigger({ path, id, body });
 	};
 
 	return (
 		<form onSubmit={handleSubmit}>
-			<CreateNav
-				isLoading={isLoading}
-				title={title}
-				path={path}
-			/>
+			<CreateNav isLoading={isLoading} title={title} path={path} />
 			<CreateBody>
 				<FormSection>
 					<FormMain

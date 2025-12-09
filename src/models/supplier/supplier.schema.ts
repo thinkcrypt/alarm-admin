@@ -14,7 +14,6 @@ const supplierSchema: Schema = {
 		label: 'Email',
 		displayInTable: true,
 		default: true,
-		// isRequired: true,
 	},
 	phone: {
 		type: 'text',
@@ -43,6 +42,13 @@ const supplierSchema: Schema = {
 		inputLabel: 'Opening Receivable',
 		displayInTable: true,
 		sort: true,
+	},
+	isActive: {
+		type: 'boolean',
+		tableType: 'text',
+		// tableKey: 'string'
+		label: 'IsActive',
+		displayInTable: true,
 	},
 	createdAt: {
 		type: 'date',

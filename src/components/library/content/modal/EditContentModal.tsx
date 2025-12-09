@@ -20,8 +20,11 @@ import {
 	FormMain,
 	DiscardButton,
 	ModalSubmitButton,
+	useGetContent,
+	useUpdateByIdMutation,
+	useLazyGetByIdToEditQuery,
+	useGetSchemaQuery,
 } from '../..';
-import { useUpdateContentMutation } from '../../store/services/contentApi';
 
 type CreateModalProps = FlexProps & {
 	dataModel: InputData<any>[];
@@ -32,6 +35,7 @@ type CreateModalProps = FlexProps & {
 	contentType?: 'basic' | 'content';
 	setIsOpen?: any;
 	setHover?: any;
+	slug: string;
 };
 
 const EditContentModal = ({
@@ -42,17 +46,40 @@ const EditContentModal = ({
 	title,
 	contentType = 'content',
 	setIsOpen,
+	slug,
 	setHover,
 	...props
 }: CreateModalProps) => {
 	const { isOpen, onOpen, onClose } = useDisclosure();
-	const [formData, setFormData] = useFormData<any>(dataModel, data);
-	const [trigger, result] = useUpdateContentMutation();
+	const [trigger, result] = useUpdateByIdMutation();
+
+	const [fetch, { data: prevData, isFetching, isUninitialized }] = useLazyGetByIdToEditQuery();
+	const [formData, setFormData] = useFormData<any>(data, prevData);
+
+	const [schema, setSchema] = useState<any>([]);
+
+	const { data: schemaData, isFetching: schemaLoading } = useGetSchemaQuery('contents');
+
+	const { _id } = useGetContent(slug);
+
+	// const onModalOpen = () => {
+	// 	setFormData(data);
+	// 	onOpen();
+	// 	setIsOpen && setIsOpen(true);
+	// };
 
 	const onModalOpen = () => {
-		setFormData(data);
 		onOpen();
-		setIsOpen && setIsOpen(true);
+		let newFieldData = {};
+
+		// data?.map((field: any) => {
+		// 	// if (field?.getValue) newFieldData = { ...newFieldData, [field.name]: field?.getValue(doc) };
+		// 	if (field?.value) newFieldData = { ...newFieldData, [field.name]: field?.value };
+		// });
+
+		// setFormData({ ...formData, ...newFieldData });
+
+		fetch({ path: 'contents', id: _id });
 	};
 
 	const { isSuccess, isLoading, isError, error } = result;
@@ -70,10 +97,11 @@ const EditContentModal = ({
 	const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		e.stopPropagation();
+		const { _id, ...rest } = formData;
 		trigger({
-			body: formData,
-			path,
-			type: contentType,
+			body: changedData,
+			path: `contents`,
+			id: _id,
 		});
 	};
 
@@ -90,6 +118,10 @@ const EditContentModal = ({
 			onModalClose();
 		}
 	}, [isLoading]);
+
+	useEffect(() => {
+		if (prevData) setFormData(prevData);
+	}, [prevData, isFetching]);
 
 	return (
 		<>

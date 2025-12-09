@@ -9,7 +9,7 @@ import {
 	FlexProps,
 	CheckboxProps,
 } from '@chakra-ui/react';
-import { useGetQuery } from '../..';
+import { JsonView, useGetQuery } from '../..';
 
 type VDataMenuProps = InputProps & {
 	label: string;
@@ -106,6 +106,7 @@ const VPermissions: FC<VDataMenuProps> = ({
 
 	return (
 		<Grid {...containerGridCss}>
+			{/* <JsonView data={value || []} /> */}
 			{data &&
 				data?.map((item: any, i: number) => (
 					<Flex
@@ -152,7 +153,7 @@ const itemCheckboxCss = (isSelected: boolean): CheckboxProps => {
 	return {
 		px: 3,
 		py: 1.5,
-		borderRadius: 'full',
+		borderRadius: '6px',
 		border: '1px solid',
 		size: 'sm',
 		colorScheme: 'brand',

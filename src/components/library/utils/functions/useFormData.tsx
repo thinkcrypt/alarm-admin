@@ -1,6 +1,9 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, type Dispatch, type SetStateAction } from 'react';
 
-const useFormData = <T extends {}>(data: any[], updatedData?: any) => {
+const useFormData = <T extends {}>(
+	data: any[],
+	updatedData?: any
+): [T, Dispatch<SetStateAction<T>>] => {
 	const initialFormData = useCallback(() => {
 		return data.reduce((acc: Partial<T>, curr: any) => {
 			if (curr.type === 'tag' || curr.type === 'array' || curr.type === 'data-tag') {
