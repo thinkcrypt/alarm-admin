@@ -151,6 +151,7 @@ import { RxSpaceBetweenHorizontally, RxSpaceEvenlyHorizontally } from 'react-ico
 import iconOptionsArrayData from './iconOptionsArrayData';
 import { FiEdit, FiFilter, FiImage, FiUser } from 'react-icons/fi';
 import { TfiLayoutSidebarRight } from 'react-icons/tfi';
+import { MdOutlineConfirmationNumber } from "react-icons/md";
 
 export type IconNameOptions = (typeof iconOptionsArrayData)[number];
 
@@ -275,6 +276,7 @@ const icons: any = {
 	undo: HiArrowUturnLeft,
 	user: FaUserFriends,
 	sort: BiSortAZ,
+	confirm: MdOutlineConfirmationNumber,
 
 	//zhoei icons
 	'z-cart': IoBagOutline,

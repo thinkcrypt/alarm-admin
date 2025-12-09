@@ -61,6 +61,15 @@ const multiSelectMenu: SelectmenuItemProps[] = [
 		},
 	},
 	{
+		title: 'Add Discount',
+		type: 'bulk-discount',
+		prompt: {
+			title: 'Add Discount',
+			body: 'Apply discount settings to all selected products.',
+			successMsg: 'Discount updated for selected products',
+		},
+	},
+	{
 		title: 'Export selected',
 		type: 'export',
 	},

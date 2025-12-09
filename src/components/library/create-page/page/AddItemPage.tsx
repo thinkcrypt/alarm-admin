@@ -1,6 +1,8 @@
 'use client';
 
-import { FC, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
+
+type ProductForm = { variations?: any[]; stock?: number } & Record<string, any>;
 
 import {
 	FormMain,
@@ -21,12 +23,12 @@ type FormPageType = {
 const AddItemPage: FC<FormPageType> = ({ data }) => {
 	const { title, path, fields } = data;
 
-	const [formData, setFormData] = useFormData(fields);
+	const [formData, setFormData] = useFormData<ProductForm>(fields);
 
 	const [trigger, result] = usePostMutation();
 
 	const { isSuccess, isLoading, isError, error } = result;
-	const [changedData, setChangedData] = useState({});
+	const [changedData, setChangedData] = useState<Partial<ProductForm>>({});
 
 	useRedirect({ isSuccess, isLoading, path: `/${path}` });
 	useCustomToast({
@@ -37,9 +39,33 @@ const AddItemPage: FC<FormPageType> = ({ data }) => {
 		error: error,
 	});
 
+	const syncStockWithVariants = (data: any) => {
+		const variants = data?.variations;
+		if (!Array.isArray(variants) || variants.length === 0) return data;
+
+		const variantStock = variants.reduce(
+			(sum: number, v: any) => sum + Number(v?.stock || 0),
+			0
+		);
+		return { ...data, stock: variantStock };
+	};
+
+	useEffect(() => {
+		const total =
+			formData?.variations?.reduce(
+				(sum: number, v: any) => sum + Number(v?.stock || 0),
+				0
+			) ?? 0;
+		if (Number.isNaN(total)) return;
+		setFormData((prev: any) =>
+			prev?.stock === total ? prev : { ...prev, stock: total }
+		);
+	}, [formData?.variations]);
+
 	const handleSubmit = (e: any) => {
 		e.preventDefault();
-		trigger({ path, body: formData } as any);
+		const body = syncStockWithVariants(formData);
+		trigger({ path, body } as any);
 	};
 
 	return (

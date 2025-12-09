@@ -10,3 +10,7 @@ export { default as ModalMenuTrigger } from './ModalMenuTrigger';
 
 export { default as SearchMenu } from './SearchMenu';
 export { default as MenuIconContainer } from './MenuIconContainer';
+
+export { default as DownloadBarcodeMenuItem } from './DownloadBarcodeMenuItem';
+
+

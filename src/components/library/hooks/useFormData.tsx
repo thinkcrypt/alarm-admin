@@ -1,6 +1,9 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, type Dispatch, type SetStateAction } from 'react';
 
-const useFormData = <T extends {}>(data: any[], updatedData?: any) => {
+const useFormData = <T extends {}>(
+	data: any[],
+	updatedData?: any
+): [T, Dispatch<SetStateAction<T>>] => {
 	const initialFormData = () => {
 		// Check if data is not provided or is not an array, return an empty object
 		if (!data || !Array.isArray(data)) return {};

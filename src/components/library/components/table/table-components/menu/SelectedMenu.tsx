@@ -8,10 +8,12 @@ import {
 	CalculateModal,
 	EditManySelectModal,
 	EditDataSelectModal,
+	BulkDiscountModal,
 } from '../../table-components/modals';
 
 import { Icon } from '../../../../icon';
 import { MenuContainer } from '../../../../menu';
+import BulkInvoiceExport from '../../../modals/export/BulkInvoiceExport';
 
 type TableMenuProps = {
 	path: string;
@@ -94,6 +96,14 @@ const SelectedMenu: FC<TableMenuProps> = ({ path, hide, data, items }) => {
 									path={path}
 								/>
 							);
+						case 'bulk-invoice-export':
+							return (
+								<BulkInvoiceExport
+									key={i}
+									ids={items}
+									path={path}
+								/>
+							);
 						case 'marketing-sms':
 							return (
 								<SendBulkSmsModal
@@ -109,6 +119,16 @@ const SelectedMenu: FC<TableMenuProps> = ({ path, hide, data, items }) => {
 									dataModel={item?.dataModel}
 									keys={item?.key}
 									dataPath={item?.dataPath}
+								/>
+							);
+						case 'bulk-discount':
+							return (
+								<BulkDiscountModal
+									key={i}
+									title={item?.title}
+									items={items}
+									path={path}
+									prompt={item?.prompt}
 								/>
 							);
 						default:

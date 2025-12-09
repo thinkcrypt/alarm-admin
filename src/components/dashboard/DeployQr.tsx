@@ -1,5 +1,5 @@
 import { StatContainer } from '@/components/library/stat/stat-components';
-import { useGetSelfQuery } from '@/store/services/authApi';
+import { useGetSelfQuery } from '@/components/library';
 import {
 	Box,
 	Flex,
@@ -73,7 +73,8 @@ const DeployQr = () => {
 				<Skeleton
 					isLoaded={!isFetching}
 					w={!isFetching ? '100%' : '150px'}
-					h={!isFetching ? '100%' : '3rem'}>
+					h={!isFetching ? '100%' : '3rem'}
+					>
 					<Grid gridTemplateColumns={'1fr 1fr'}>
 						<Box>
 							<Text fontWeight={FONT_WEIGHT}>{SHOP_HEADING}</Text>

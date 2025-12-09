@@ -63,6 +63,30 @@ const schema = {
 		displayInTable: true,
 		sort: true,
 	},
+	bulkDiscounts: {
+		name: 'bulkDiscounts',
+		label: 'Discounts',
+		type: 'section-data-array',
+		section: {
+			title: 'Discounts',
+			addBtnText: 'Add Discount',
+			display: { title: 'minQuantity', description: 'price' },
+			dataModel: [
+				{
+					name: 'minQuantity',
+					label: 'Min Quantity',
+					type: 'number',
+					isRequired: true,
+				},
+				{
+					name: 'price',
+					label: 'Price',
+					type: 'number',
+					isRequired: true,
+				},
+			],
+		},
+	},
 	variations: {
 		label: 'Variants',
 		type: 'variant',
@@ -78,10 +102,28 @@ const schema = {
 				{ name: 'images', label: 'Images', type: 'image-array', limit: 6 },
 				{ name: 'name', label: 'Name', type: 'text', isRequired: true },
 				{ name: 'description', label: 'Description', type: 'textarea' },
-				{ name: 'price', label: 'Price', type: 'number', isRequired: true, span: 1 },
-				{ name: 'cost', label: 'Cost', type: 'number', isRequired: true, span: 1 },
+				{
+					name: 'price',
+					label: 'Price',
+					type: 'number',
+					isRequired: true,
+					span: 1,
+				},
+				{
+					name: 'cost',
+					label: 'Cost',
+					type: 'number',
+					isRequired: true,
+					span: 1,
+				},
 
-				{ name: 'stock', label: 'Stock', type: 'number', isRequired: true, span: 1 },
+				{
+					name: 'stock',
+					label: 'Stock',
+					type: 'number',
+					isRequired: true,
+					span: 1,
+				},
 				{ name: 'slu', label: 'SKU', type: 'text', span: 1 },
 				{
 					name: 'attributes',
@@ -138,7 +180,7 @@ const schema = {
 	},
 	description: {
 		label: 'Description',
-		type: 'textarea',
+		type: 'editor',
 	},
 	unitValue: {
 		type: 'number',
@@ -184,6 +226,11 @@ const schema = {
 		type: 'data-tag',
 		model: 'collections',
 	},
+	categories: {
+		label: 'Add categories',
+		type: 'data-tag',
+		model: 'categories',
+	},
 
 	isFeatured: {
 		label: 'Is Featured',
@@ -195,7 +242,8 @@ const schema = {
 		sort: true,
 		label: 'Is Discount',
 		type: 'checkbox',
-		displayIntable: true,
+		displayInTable: true,
+		default: true,
 		colorScheme: (isActive: boolean) => (isActive ? 'green' : 'red'),
 	},
 	discountType: {

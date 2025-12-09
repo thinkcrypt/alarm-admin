@@ -14,6 +14,7 @@ type FormDataType = {
 	isDisabled?: boolean;
 	name: any;
 	hasImage?: boolean;
+	isLucideIcon?: boolean;
 	limit?: number;
 	section?: any;
 };
@@ -24,6 +25,7 @@ const VSectionDataArray: FC<FormDataType> = ({
 	isRequired = false,
 	label,
 	helper,
+	isLucideIcon,
 	isDisabled = false,
 	name,
 	limit = 999,

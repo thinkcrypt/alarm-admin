@@ -1,7 +1,6 @@
-import { useGetSelfQuery } from '@/store/services/authApi';
 import { Box, GridItem, Heading, Spacer, Tag, Text } from '@chakra-ui/react';
 import React from 'react';
-import { styles, Column } from '@/components/library';
+import { styles, Column, useGetSelfQuery } from '@/components/library';
 import moment from 'moment';
 
 // STYLING

@@ -1,6 +1,5 @@
 import React from 'react';
-import { ShowSum } from '@/components/library';
-import { useGetSelfQuery } from '@/store/services/authApi';
+import { ShowSum, useGetSelfQuery } from '@/components/library';
 
 const MarketingAnalytics = () => {
 	const { data } = useGetSelfQuery({});

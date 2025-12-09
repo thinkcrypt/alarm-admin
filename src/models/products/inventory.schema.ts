@@ -1,6 +1,6 @@
 import { createBrandModel } from '../brand/brand.model';
 import productUnitOptions from '../util/productUnitOptions';
-
+// version
 const schema = {
 	image: {
 		label: 'Thumbnail',

@@ -42,6 +42,7 @@ const TableCustom: FC<TableProps> = ({ table, inputFields }) => {
 		sort,
 		filters: table?.preFilters ?? (table?.filters ? filters : null),
 		path: table?.path,
+		refreshKey: table?.refreshKey,
 	});
 
 	const { data: userData } = useGetSelfQuery({});

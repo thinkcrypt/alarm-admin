@@ -5,10 +5,18 @@ import SidebarItem from './SidebarItem';
 
 import { sidebarData as sidebar, useGetQuery, useGetSelfQuery } from '../..';
 
-import { SidebarBody, SidebarContainer, SidebarHeading, SidebarLogo } from './sidebar-components';
+import {
+	SidebarBody,
+	SidebarContainer,
+	SidebarHeading,
+	SidebarLogo,
+} from './sidebar-components';
 import Link from 'next/link';
 
-const Sidebar: FC<FlexProps & { closeBtn?: ReactNode }> = ({ closeBtn, ...props }) => {
+const Sidebar: FC<FlexProps & { closeBtn?: ReactNode }> = ({
+	closeBtn,
+	...props
+}) => {
 	const sidebarType = process.env.NEXT_PUBLIC_SIDEBAR_TYPE || 'generic';
 
 	const { data } = useGetSelfQuery({});
@@ -18,7 +26,8 @@ const Sidebar: FC<FlexProps & { closeBtn?: ReactNode }> = ({ closeBtn, ...props 
 		isError,
 	} = useGetQuery({ path: `/sidebar/crm/${sidebarType}` });
 
-	const title = data?.shop?.name || process.env.NEXT_PUBLIC_STORE_NAME || 'Admin';
+	const title =
+		data?.shop?.name || process.env.NEXT_PUBLIC_STORE_NAME || 'Admin';
 
 	const main =
 		isFetching || !sidebarData
@@ -26,7 +35,8 @@ const Sidebar: FC<FlexProps & { closeBtn?: ReactNode }> = ({ closeBtn, ...props 
 					<Stack key={i}>
 						<SidebarHeading
 							isLoading={isFetching || !sidebarData}
-							show={item?.startOfSection}>
+							show={item?.startOfSection}
+						>
 							{item?.sectionTitle}
 						</SidebarHeading>
 						<Link href={item?.href}>
@@ -34,7 +44,8 @@ const Sidebar: FC<FlexProps & { closeBtn?: ReactNode }> = ({ closeBtn, ...props 
 								isLoading={isFetching || !sidebarData}
 								href={item?.href}
 								path={item?.path}
-								icon={item?.icon}>
+								icon={item?.icon}
+							>
 								{item?.title}
 							</SidebarItem>
 						</Link>
@@ -42,9 +53,7 @@ const Sidebar: FC<FlexProps & { closeBtn?: ReactNode }> = ({ closeBtn, ...props 
 			  ))
 			: sidebarData.map((item: any, i: number) => (
 					<Stack key={i}>
-						<SidebarHeading
-							isLoading={false}
-							show={item?.startOfSection}>
+						<SidebarHeading isLoading={false} show={item?.startOfSection}>
 							{item?.sectionTitle}
 						</SidebarHeading>
 						<Link href={item?.href}>
@@ -52,7 +61,8 @@ const Sidebar: FC<FlexProps & { closeBtn?: ReactNode }> = ({ closeBtn, ...props 
 								isLoading={false}
 								href={item?.href}
 								path={item?.path}
-								icon={item?.icon}>
+								icon={item?.icon}
+							>
 								{item?.title}
 							</SidebarItem>
 						</Link>
@@ -65,7 +75,8 @@ const Sidebar: FC<FlexProps & { closeBtn?: ReactNode }> = ({ closeBtn, ...props 
 					color='sidebar.headerText.light'
 					_dark={{ color: 'sidebar.headerText.dark' }}
 					size='md'
-					fontFamily='Bebas Neue'>
+					fontFamily='Bebas Neue'
+				>
 					{title}
 				</Heading>
 				{closeBtn && closeBtn}

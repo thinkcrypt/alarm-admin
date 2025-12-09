@@ -57,6 +57,7 @@ const schema: SchemaProps = {
 		type: 'number',
 		displayInTable: true,
 		default: true,
+		sort: true,
 	},
 	isActive: {
 		label: 'Is Active',

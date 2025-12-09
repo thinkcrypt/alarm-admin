@@ -22,17 +22,19 @@ const schema: Schema = {
 		displayInTable: true,
 		default: true,
 	},
+	deliveryDate: {
+		type: 'date',
+		label: 'Delivery Date',
+		displayInTable: true,
+		default: true,
+	},
 	addedBy: {
 		type: 'string',
 		tableKey: 'addedBy.name',
 		label: 'Added By',
 		displayInTable: true,
 	},
-	totalItems: {
-		label: 'Total Price',
-		type: 'number',
-		displayInTable: true,
-	},
+	
 	subTotal: {
 		type: 'number',
 		label: 'Sub Total',

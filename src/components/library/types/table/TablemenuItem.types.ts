@@ -18,7 +18,9 @@ type Item =
 	| 'custom-redirect'
 	| 'duplicate'
 	| 'view-server-modal'
-	| 'edit-server-modal';
+	| 'edit-server-modal'
+	| 'download';
+	
 
 type BaseMenuItem = {
 	title: string;

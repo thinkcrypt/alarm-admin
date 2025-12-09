@@ -523,6 +523,7 @@ const FormInput: FC<FormInputProps> = ({
 					name={props.name}
 					helper={item?.helper}
 					hasImage={item?.hasImage}
+					isLucideIcon={item?.isLucideIcon}
 					limit={item?.limit}
 					section={item?.section}
 					{...props}
