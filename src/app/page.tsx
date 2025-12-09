@@ -21,37 +21,32 @@ import {
 	OrderTable,
 	DeployQr,
 	PackageCard,
+	WeeklyOrderAnalytics,
 } from '@/components/dashboard';
 
 import Link from 'next/link';
 
 export default function UserFeedback() {
 	return (
-		<Layout
-			title='Dashboard'
-			path='dashboard'>
+		<Layout title='Dashboard' path='dashboard'>
 			<Grid
-				pt={{ base: 2, md: 4 }}
+				// pt={{ base: 2, md: 4 }}
 				gridTemplateColumns={{ base: '1fr', md: '1fr 1fr' }}
-				gap={2}>
+				gap={2}
+			>
 				{/* <ShopQr /> */}
 				<DeployQr />
 				{/* <PackageCard /> */}
 			</Grid>
-			<Grid
-				gridTemplateColumns={{ base: '1fr', md: '1fr 1fr 1fr' }}
-				gap={2}>
-				<DashboardOverview />
-			</Grid>
 			<Col>
-				<Heading size='md'>Marketing</Heading>
-				<Grid
-					gridTemplateColumns={{ base: '1fr', md: '1fr 1fr' }}
-					gap={2}>
-					<MarketingAnalytics />
-				</Grid>
-			</Col>
-			<Col>
+				<ColOptPadding>
+					{/* weekly order analytics */}
+					<Heading size='md'>Weekly Order Analytics</Heading>
+					<Column gap={4}>
+						<WeeklyOrderAnalytics />
+					</Column>
+				</ColOptPadding>
+				{/* overall order analytics */}
 				<Heading size='md'>Order Analytics</Heading>
 				<Column gap={4}>
 					<Align gap={2}>
@@ -63,13 +58,9 @@ export default function UserFeedback() {
 					<OrderAnalytics title='Order Analytics' />
 				</Column>
 
-				<Col
-					gap={2}
-					pb={2}>
+				<Col gap={2} pb={2}>
 					<DashContainer pt={4}>
-						<SpaceBetween
-							align='center'
-							px={4}>
+						<SpaceBetween align='center' px={4}>
 							<Heading size='sm'>Recent Orders</Heading>
 							<Link href='/orders'>
 								<Button size='xs'>View Orders</Button>
@@ -80,9 +71,7 @@ export default function UserFeedback() {
 				</Col>
 				<Column gap={2}>
 					<DashContainer pt={4}>
-						<SpaceBetween
-							align='center'
-							px={4}>
+						<SpaceBetween align='center' px={4}>
 							<Heading size='sm'>Top Selling Products</Heading>
 						</SpaceBetween>
 						<TopProducts />
@@ -90,24 +79,34 @@ export default function UserFeedback() {
 				</Column>
 				<Column gap={2}>
 					<DashContainer pt={4}>
-						<SpaceBetween
-							align='center'
-							px={4}>
+						<SpaceBetween align='center' px={4}>
 							<Heading size='sm'>Top Customers</Heading>
 						</SpaceBetween>
 						<TopCustomers />
 					</DashContainer>
 				</Column>
 			</Col>
+
+			<Grid gridTemplateColumns={{ base: '1fr', md: '1fr 1fr 1fr' }} gap={2}>
+				<DashboardOverview />
+			</Grid>
+			<Col>
+				<Heading size='md'>Marketing</Heading>
+				<Grid gridTemplateColumns={{ base: '1fr', md: '1fr 1fr' }} gap={2}>
+					<MarketingAnalytics />
+				</Grid>
+			</Col>
 		</Layout>
 	);
 }
 
 const Col = ({ children, ...props }: FlexChild) => (
-	<Column
-		gap={6}
-		py={6}
-		{...props}>
+	<Column gap={6} py={6} {...props}>
+		{children}
+	</Column>
+);
+const ColOptPadding = ({ children, ...props }: FlexChild) => (
+	<Column gap={6} py={0} mt={-7} {...props}>
 		{children}
 	</Column>
 );

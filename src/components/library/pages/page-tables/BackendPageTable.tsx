@@ -60,9 +60,9 @@ const BackendPageTable: FC<TableProps> = ({ table, layoutPath, children }) => {
 			filters: table?.preFilters ?? (tableFilters ? filters : null),
 			path: table?.path,
 		},
-		{
-			pollingInterval: 10000, // Poll every 10 seconds (set your desired interval in ms)
-		}
+		// {
+		// 	pollingInterval: 10000, // Poll every 10 seconds (set your desired interval in ms)
+		// }
 	);
 
 	const { data: userData } = useGetSelfQuery({});
