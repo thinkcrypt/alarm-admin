@@ -20,7 +20,7 @@ export const viewport = {
 	maximumScale: 1,
 	userScalable: false,
 };
-
+//main
 export default function RootLayout({ children }: { children: React.ReactNode }) {
 	return (
 		<html
