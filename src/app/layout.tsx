@@ -10,8 +10,8 @@ import { GeistMono } from 'geist/font/mono';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-	title: 'Dashboard | DDONG BD',
-	description: 'DDONG BD Admin Dashboard',
+	title: 'Dashboard | ALARM BD',
+	description: 'ALARM BD Admin Dashboard',
 };
 
 export const viewport = {
