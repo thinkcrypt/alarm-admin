@@ -59,10 +59,10 @@ const ColoredPageTable: FC<TableProps> = ({
 			sort,
 			filters: table?.preFilters ?? (tableFilters ? filters : null),
 			path: table?.path,
+		},
+		{
+			pollingInterval: 10000, // Poll every 10 seconds (set your desired interval in ms)
 		}
-		// {
-		// 	pollingInterval: 10000, // Poll every 10 seconds (set your desired interval in ms)
-		// }
 	);
 	console.log('order data:', data);
 	const { data: userData } = useGetSelfQuery({});
