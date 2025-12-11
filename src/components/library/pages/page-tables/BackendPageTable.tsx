@@ -11,7 +11,11 @@ import Toast from '../../components/toast/Toast';
 import Headers from '../../components/table/table-components/header/Headers';
 import TableRowComponent from '../../components/table/table-components/row/TableRowComponent';
 import { setFields, setPreferences } from '../../store/slices/tableSlice';
-import { useGetAllQuery, useGetSelfQuery, useGetSchemaQuery } from '../../store';
+import {
+	useGetAllQuery,
+	useGetSelfQuery,
+	useGetSchemaQuery,
+} from '../../store';
 import Column from '../../containers/Column';
 import { Flex } from '@chakra-ui/react';
 import { BackendTableObjectProps } from '../../types';
@@ -26,12 +30,20 @@ type TableProps = {
 
 // Define the PageTable component
 const BackendPageTable: FC<TableProps> = ({ table, layoutPath, children }) => {
-	const { page, limit, search, sort, filters, preferences, selectedItems }: any = useAppSelector(
-		(state: any) => state.table
-	);
+	const {
+		page,
+		limit,
+		search,
+		sort,
+		filters,
+		preferences,
+		selectedItems,
+	}: any = useAppSelector((state: any) => state.table);
 
 	const [schema, setSchema] = useState<any>(null);
-	const { data: schemaData, isFetching: schemaLoading } = useGetSchemaQuery(table?.path);
+	const { data: schemaData, isFetching: schemaLoading } = useGetSchemaQuery(
+		table?.path
+	);
 
 	const dispatch = useAppDispatch();
 	const [col, setCol] = useState<number>(table?.fields?.length + 1);
@@ -39,10 +51,15 @@ const BackendPageTable: FC<TableProps> = ({ table, layoutPath, children }) => {
 
 	useEffect(() => {
 		if (schemaData) {
-			const tableFields = convertToTableFields({ schema: schemaData, fields: table?.fields });
+			const tableFields = convertToTableFields({
+				schema: schemaData,
+				fields: table?.fields,
+			});
 			setSchema(tableFields);
 			const defaultFields = tableFields
-				? tableFields?.filter((item: any) => item.type !== 'menu').map((item: any) => item?.dataKey)
+				? tableFields
+						?.filter((item: any) => item.type !== 'menu')
+						.map((item: any) => item?.dataKey)
 				: [];
 			dispatch(setFields(defaultFields));
 		}
@@ -60,9 +77,9 @@ const BackendPageTable: FC<TableProps> = ({ table, layoutPath, children }) => {
 			filters: table?.preFilters ?? (tableFilters ? filters : null),
 			path: table?.path,
 		},
-		// {
-		// 	pollingInterval: 10000, // Poll every 10 seconds (set your desired interval in ms)
-		// }
+		{
+			pollingInterval: 10000, // Poll every 10 seconds (set your desired interval in ms)
+		}
 	);
 
 	const { data: userData } = useGetSelfQuery({});
@@ -76,11 +93,14 @@ const BackendPageTable: FC<TableProps> = ({ table, layoutPath, children }) => {
 			}
 		}
 		const defaultPreferences = schema
-			? schema?.filter((item: any) => item.default).map((item: any) => item?.dataKey)
+			? schema
+					?.filter((item: any) => item.default)
+					.map((item: any) => item?.dataKey)
 			: [];
 		if (userData && userData?.preferences) {
 			const preference = userData?.preferences[table?.path];
-			const value = preference && preference?.length > 0 ? preference : defaultPreferences;
+			const value =
+				preference && preference?.length > 0 ? preference : defaultPreferences;
 			dispatch(setPreferences(value));
 			setCol(value.length + 1);
 		}
@@ -100,7 +120,9 @@ const BackendPageTable: FC<TableProps> = ({ table, layoutPath, children }) => {
 	// Create the table body by mapping over the data and creating a TableRowComponent for each item
 	const body = data?.doc?.map((item: any) => (
 		<TableRowComponent
-			onClick={() => table?.clickable && router.push(`${table?.toPath}/${item?._id}`)}
+			onClick={() =>
+				table?.clickable && router.push(`${table?.toPath}/${item?._id}`)
+			}
 			selectable={selectable}
 			fields={preferences}
 			item={item}
@@ -115,10 +137,7 @@ const BackendPageTable: FC<TableProps> = ({ table, layoutPath, children }) => {
 	// Return the layout, page heading, table, and toast components
 	return (
 		<>
-			<Layout
-				pb='32px'
-				title={table?.title}
-				path={layoutPath || table?.path}>
+			<Layout pb='32px' title={table?.title} path={layoutPath || table?.path}>
 				<Column gap={2}>
 					<BackendPageHeading
 						table={table}
@@ -149,16 +168,14 @@ const BackendPageTable: FC<TableProps> = ({ table, layoutPath, children }) => {
 						isError={isError} //If error while fetching data
 						select={table?.select} //Select menu
 						error={error} //Error message
-						table={table}>
+						table={table}
+					>
 						<>{body}</>
 					</CustomTable>
 				</Column>
 			</Layout>
 			{/* Toast component to display error */}
-			<Toast
-				error={error}
-				isError={isError}
-			/>
+			<Toast error={error} isError={isError} />
 		</>
 	);
 };
